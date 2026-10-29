@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="id" class="night dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spidey Faro AI Workspace - Gemini, ChatGPT & Claude API</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        spidey: {
+                            red: '#ef4444',
+                            redDark: '#dc2626',
+                            redDeep: '#991b1b',
+                            blue: '#2563eb',
+                            blueDark: '#1d4ed8',
+                            blueDeep: '#1e3a8a',
+                            yellow: '#facc15',
+                            yellowLight: '#fef08a',
+                            purple: '#8b5cf6',
+                            nightBg: '#0b0f19',
+                            nightCard: '#1e293b',
+                            paper: '#f8fafc',
+                            bugle: '#fef3c7'
+                        }
+                    },
+                    fontFamily: {
+                        bangers: ['Bangers', 'cursive'],
+                        fredoka: ['Fredoka', 'cursive', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        'comic': '4px 4px 0px 0px #0f172a',
+                        'comic-lg': '6px 6px 0px 0px #0f172a',
+                        'comic-red': '4px 4px 0px 0px #ef4444',
+                        'comic-blue': '4px 4px 0px 0px #2563eb',
+                        'comic-purple': '4px 4px 0px 0px #8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for Code Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+            user-select: none;
+            background-color: #0f172a;
+        }
+        h1, h2, .font-title {
+            font-family: 'Bangers', cursive;
+            letter-spacing: 0.05em;
+        }
+        h3, h4, .font-subhead {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Spider Comic Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ef4444;
+            border: 2px solid #0f172a;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #facc15;
+        }
+
+        /* Comic Card Styling */
+        .comic-box {
+            background-color: #ffffff;
+            border: 3.5px solid #0f172a;
+            box-shadow: 4px 4px 0px 0px #0f172a;
+            border-radius: 20px;
+        }
+        .day .comic-box {
+            background-color: #ffffff;
+            color: #0f172a;
+        }
+        .night .comic-box {
+            background-color: #1e293b;
+            border-color: #f8fafc;
+            box-shadow: 4px 4px 0px 0px #f8fafc;
+            color: #f8fafc;
+        }
+
+        .comic-btn {
+            border: 2.5px solid #0f172a;
+            box-shadow: 3px 3px 0px 0px #0f172a;
+            border-radius: 14px;
+            transition: all 0.12s ease;
+        }
+        .comic-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px #0f172a;
+        }
+        .night .comic-btn {
+            border-color: #f8fafc;
+            box-shadow: 3px 3px 0px 0px #f8fafc;
+        }
+        .night .comic-btn:active {
+            box-shadow: 1px 1px 0px 0px #f8fafc;
+        }
+
+        /* Spider Web Pattern Background Overlay */
+        .web-grid-pattern {
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.12) 0%, transparent 70%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        /* Sticky tape for Daily Bugle notes */
+        .bugle-tape {
+            position: relative;
+        }
+        .bugle-tape::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+            width: 70px;
+            height: 20px;
+            background: rgba(254, 240, 138, 0.85);
+            border: 1.5px dashed rgba(15, 23, 42, 0.4);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .markdown-body pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 2px solid #334155;
+        }
+        .markdown-body code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 transition-colors duration-500 h-screen w-screen flex flex-col overflow-hidden web-grid-pattern">
+
+    <!-- SPIDER-MAN COMIC ANIMATED CANVAS -->
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- MAIN APPLICATION WRAPPER -->
+    <div class="relative z-10 flex h-full w-full overflow-hidden p-2 md:p-4 gap-3">
+
+        <!-- SIDEBAR: SPIDER-VERSE CONTROL PANEL -->
+        <aside id="sidebar" class="w-80 comic-box flex flex-col transition-all duration-300 ease-in-out z-30 fixed md:relative h-full -translate-x-full md:translate-x-0 shrink-0">
+            <!-- Sidebar Header -->
+            <div class="p-4 flex items-center justify-between border-b-4 border-slate-900 dark:border-slate-100 bg-spidey-red text-white rounded-t-[16px]">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-spidey-yellow border-2 border-slate-900 flex items-center justify-center text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]">
+                        <i class="fa-solid fa-spider text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold tracking-wider text-white drop-shadow-[2px_2px_0px_#0f172a]">SPIDEY FARO</h1>
+                        <p class="text-xs font-subhead font-semibold text-spidey-yellow" id="sidebarStatusBadge">Gemini, ChatGPT & Claude</p>
+                    </div>
+                </div>
+                <button id="closeSidebarBtn" class="md:hidden text-white hover:text-spidey-yellow p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- New Chat Session Button -->
+            <div class="p-4">
+                <button id="newChatBtn" class="w-full py-3 px-4 bg-spidey-yellow hover:bg-yellow-300 text-slate-900 font-bold font-title text-xl tracking-wider comic-btn flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bolt text-lg"></i>
+                    <span>OBROLAN BARU</span>
+                </button>
+            </div>
+
+            <!-- Spider-Verse Persona Selector -->
+            <div class="px-4 py-2">
+                <label class="text-xs font-bold font-subhead text-slate-500 dark:text-slate-300 uppercase tracking-wider block mb-2">Pilih Persona Spider-Verse</label>
+                <div class="grid grid-cols-2 gap-2" id="personaContainer">
+                    <!-- Dynamic Persona Buttons -->
+                </div>
+            </div>
+
+            <!-- Search Chat History -->
+            <div class="px-4 my-2">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchChatInput" placeholder="Cari obrolan Spidey..." class="w-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 rounded-xl pl-8 pr-3 py-1.5 text-xs focus:outline-none font-medium">
+                </div>
+            </div>
+
+            <!-- Chat History List -->
+            <div class="flex-1 overflow-y-auto px-4 py-2 space-y-2" id="chatHistoryList">
+                <!-- Dynamic Chat Sessions -->
+            </div>
+
+            <!-- Sidebar Footer Controls -->
+            <div class="p-4 border-t-3 border-slate-900 dark:border-slate-100 space-y-2 bg-slate-100 dark:bg-slate-900/60 rounded-b-[16px]">
+                <div id="statusIndicatorBox" class="w-full py-2.5 px-3 bg-emerald-500/20 border-2 border-emerald-500 text-emerald-700 dark:text-emerald-300 rounded-xl text-xs flex items-center justify-between font-bold font-subhead">
+                    <span class="flex items-center gap-2">
+                        <i id="statusIcon" class="fa-solid fa-shield-halved text-emerald-500"></i>
+                        <span id="statusTitleText">Engine AI Active</span>
+                    </span>
+                    <span id="statusTagBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500 text-white font-bold">Free Mode</span>
+                </div>
+
+                <button id="openSettingsModalBtn" class="w-full py-2.5 px-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 comic-btn text-xs flex items-center justify-between font-bold font-subhead">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-spidey-blue"></i>
+                        <span>Pengaturan API & Engine</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay for Mobile Sidebar -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-20 hidden md:hidden"></div>
+
+        <!-- MAIN CHAT WORKSPACE -->
+        <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+
+            <!-- HEADER BAR -->
+            <header class="h-16 comic-box px-4 flex items-center justify-between shrink-0 mb-3 z-10 bg-white dark:bg-slate-800">
+                <div class="flex items-center gap-3">
+                    <button id="toggleSidebarBtn" class="md:hidden p-2 comic-btn bg-spidey-yellow text-slate-900">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+
+                    <!-- Spidey Status Header -->
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10 flex items-center justify-center bg-spidey-red border-2 border-slate-900 rounded-xl shadow-[2px_2px_0px_0px_#0f172a] text-white">
+                            <i id="headerStatusIcon" class="fa-solid fa-spider text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 id="currentPersonaName" class="font-bold font-title text-xl text-slate-900 dark:text-slate-100 tracking-wide">Peter Faro AI</h2>
+                                <span id="modelTag" class="text-[10px] px-2 py-0.5 rounded-full bg-spidey-yellow border border-slate-900 text-slate-900 font-bold font-mono">Gemini / ChatGPT / Claude</span>
+                            </div>
+                            <p id="spideyStatusText" class="text-xs font-subhead font-medium text-slate-500 dark:text-slate-300">Spider-Sense Online • Siap Bertindak! ⚡</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex items-center gap-2">
+                    <button id="toggleThemeBtn" title="Tukar Mode Siang/Malam" class="p-2.5 comic-btn bg-spidey-yellow text-slate-900 hover:bg-yellow-300">
+                        <i id="themeIcon" class="fa-solid fa-sun text-base"></i>
+                    </button>
+
+                    <button id="toggleSoundBtn" title="Efek Suara Komik & Thwip!" class="p-2.5 comic-btn bg-spidey-blue text-white hover:bg-blue-600">
+                        <i id="soundIcon" class="fa-solid fa-volume-high text-base"></i>
+                    </button>
+
+                    <button id="toggleScratchpadBtn" title="Catatan Daily Bugle" class="p-2.5 comic-btn bg-spidey-red text-white hover:bg-red-600 relative">
+                        <i class="fa-solid fa-newspaper text-base"></i>
+                        <span id="noteCountBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-spidey-yellow text-slate-900 border-2 border-slate-900 rounded-full text-[10px] font-bold flex items-center justify-center hidden">0</span>
+                    </button>
+
+                    <div class="relative group">
+                        <button id="exportChatBtn" title="Ekspor Percakapan" class="p-2.5 comic-btn bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                            <i class="fa-solid fa-download text-base"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-2 w-48 comic-box p-2 shadow-xl hidden group-hover:block z-50 bg-white dark:bg-slate-800">
+                            <button onclick="exportHistory('markdown')" class="w-full text-left px-3 py-1.5 text-xs font-bold font-subhead hover:bg-spidey-yellow rounded-lg text-slate-900 dark:text-slate-100">Markdown (.md)</button>
+                            <button onclick="exportHistory('json')" class="w-full text-left px-3 py-1.5 text-xs font-bold font-subhead hover:bg-spidey-yellow rounded-lg text-slate-900 dark:text-slate-100">Format JSON (.json)</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CHAT MESSAGES & HERO DISPLAY -->
+            <div class="flex-1 overflow-y-auto p-3 md:p-5 space-y-4 relative rounded-2xl" id="chatContainer">
+                
+                <!-- HERO SECTION -->
+                <div id="heroOrbSection" class="comic-box p-6 my-2 text-center flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-slate-900/90 to-slate-950/90 text-white border-4 border-slate-900">
+                    
+                    <div class="relative w-48 h-48 md:w-52 md:h-52 my-1 flex items-center justify-center">
+                        <canvas id="mascotCanvas" width="240" height="240" class="cursor-pointer transition-transform hover:scale-105" title="Klik Spidey Faro untuk aksi Thwip!"></canvas>
+                    </div>
+
+                    <h3 class="text-2xl md:text-3xl font-bold font-title text-spidey-yellow tracking-wider drop-shadow-[2px_2px_0px_#0f172a] mt-2">
+                        HALO! AKU SPIDEY FARO 🕷️🕸️
+                    </h3>
+                    <p class="text-xs md:text-sm font-subhead text-slate-200 max-w-md mt-1 leading-relaxed font-medium">
+                        Dukung <span class="text-purple-400 font-bold">Claude AI</span>, <span class="text-emerald-400 font-bold">Google Gemini</span>, <span class="text-spidey-blue font-bold">ChatGPT</span>, & <span class="text-spidey-yellow font-bold">Mode Gratis Bebas Key</span>!
+                    </p>
+
+                    <!-- Quick Preset Prompts -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 mt-5 max-w-lg" id="presetChipsContainer">
+                        <!-- Dynamic Presets -->
+                    </div>
+                </div>
+
+                <!-- Chat Stream Area -->
+                <div id="messagesList" class="space-y-4 pb-16">
+                    <!-- Dynamic Messages -->
+                </div>
+            </div>
+
+            <!-- CHAT INPUT CONTROLLER -->
+            <div class="mt-3 comic-box p-3 shrink-0 bg-white dark:bg-slate-800">
+                <div class="max-w-4xl mx-auto space-y-2">
+
+                    <!-- Image Upload / Art Request Bar -->
+                    <div id="imagePreviewContainer" class="hidden flex items-center gap-3 p-2 bg-spidey-yellow/30 border-2 border-slate-900 rounded-xl w-fit">
+                        <img id="imagePreview" src="" alt="Unggahan" class="h-12 w-12 object-cover rounded-lg border-2 border-slate-900">
+                        <div class="text-xs pr-2">
+                            <p id="imageName" class="font-bold text-slate-900 dark:text-slate-100 truncate max-w-[160px]">gambar.png</p>
+                            <span class="text-[10px] text-slate-500 font-medium">Foto Terlampir (Multimodal)</span>
+                        </div>
+                        <button id="removeImageBtn" class="p-1 text-slate-700 hover:text-red-500">
+                            <i class="fa-solid fa-circle-xmark text-base"></i>
+                        </button>
+                    </div>
+
+                    <!-- Text Input Box -->
+                    <div class="relative flex items-end gap-2 bg-slate-50 dark:bg-slate-900 border-3 border-slate-900 dark:border-slate-100 rounded-2xl p-2">
+                        
+                        <button id="attachBtn" title="Unggah Gambar" class="p-2.5 comic-btn bg-spidey-blue text-white hover:bg-blue-600">
+                            <i class="fa-solid fa-paperclip text-base"></i>
+                        </button>
+                        <input type="file" id="imageInput" accept="image/*" class="hidden">
+
+                        <textarea id="promptInput" rows="1" placeholder="Tulis pesan untuk Spidey Faro..." class="flex-1 bg-transparent border-0 text-xs md:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none resize-none max-h-32 py-2 px-1 font-medium overflow-y-auto"></textarea>
+
+                        <button id="micBtn" title="Dikte Suara" class="p-2.5 comic-btn bg-spidey-yellow text-slate-900 hover:bg-yellow-300">
+                            <i class="fa-solid fa-microphone text-base"></i>
+                        </button>
+
+                        <button id="sendBtn" class="p-2.5 comic-btn bg-spidey-red hover:bg-red-600 text-white font-bold font-title text-lg px-4">
+                            <i class="fa-solid fa-paper-plane text-base"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between text-[11px] font-subhead text-slate-500 dark:text-slate-400 px-1 font-semibold">
+                        <span>Tekan Enter untuk menembak pesan 🕸️</span>
+                        <span id="inputModeBadge" class="text-emerald-500 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check text-xs"></i> Ready
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- DAILY BUGLE SCRATCHPAD -->
+        <aside id="scratchpadDrawer" class="w-80 comic-box flex flex-col fixed right-4 top-4 bottom-4 z-40 translate-x-[120%] transition-transform duration-300 ease-in-out bg-spidey-bugle text-slate-900">
+            <div class="p-4 border-b-3 border-slate-900 flex items-center justify-between bg-spidey-yellow rounded-t-[16px]">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-newspaper text-spidey-red text-xl"></i>
+                    <h3 class="font-bold font-title text-2xl text-slate-900 tracking-wider">DAILY BUGLE NOTES</h3>
+                </div>
+                <button id="closeScratchpadBtn" class="p-1.5 text-slate-900 hover:text-red-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-4" id="notesList">
+                <!-- Dynamic sticky notes -->
+            </div>
+
+            <div class="p-4 border-t-3 border-slate-900 space-y-2 bg-yellow-100/90 rounded-b-[16px]">
+                <textarea id="newNoteInput" rows="2" placeholder="Tulis berita/catatan rahasia di sini..." class="w-full bg-white border-2 border-slate-900 rounded-xl p-2 text-xs text-slate-900 focus:outline-none resize-none font-medium"></textarea>
+                <div class="flex gap-2">
+                    <button id="addNoteBtn" class="flex-1 py-2 bg-spidey-red text-white font-bold font-title text-lg tracking-wider comic-btn">
+                        TEMPEL CATATAN 🕷️
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- MODAL: ENGINE, GEMINI, CHATGPT & CLAUDE API SETTINGS -->
+    <div id="settingsModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="comic-box max-w-md w-full p-6 shadow-2xl bg-white dark:bg-slate-900 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4 border-b-2 border-slate-900 pb-3">
+                <h3 class="font-bold font-title text-2xl text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-spidey-blue"></i> PENGATURAN API & ENGINE
+                </h3>
+                <button id="closeSettingsModalBtn" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs font-medium">
+                <!-- Anthropic Claude API Key Input -->
+                <div class="p-3 bg-purple-50 dark:bg-slate-800/80 border-2 border-purple-600 rounded-xl space-y-1">
+                    <label class="block font-bold font-subhead text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-brain"></i> Anthropic Claude API Key
+                    </label>
+                    <input type="password" id="claudeApiKeyInput" placeholder="Tempelkan Claude Key (sk-ant-api...)" class="w-full bg-white dark:bg-slate-900 border-2 border-slate-900 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none font-mono text-xs">
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">
+                        Dapatkan API Key di <a href="https://console.anthropic.com/" target="_blank" class="text-purple-600 font-bold underline">Anthropic Console</a>.
+                    </p>
+                </div>
+
+                <!-- ChatGPT / OpenAI API Key Input -->
+                <div class="p-3 bg-blue-50 dark:bg-slate-800/80 border-2 border-spidey-blue rounded-xl space-y-1">
+                    <label class="block font-bold font-subhead text-spidey-blue dark:text-blue-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bolt"></i> OpenAI / ChatGPT API Key
+                    </label>
+                    <input type="password" id="openAiApiKeyInput" placeholder="Tempelkan ChatGPT Key (sk-proj-...)" class="w-full bg-white dark:bg-slate-900 border-2 border-slate-900 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none font-mono text-xs">
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">
+                        Dapatkan API Key di <a href="https://platform.openai.com/api-keys" target="_blank" class="text-spidey-blue font-bold underline">OpenAI Platform</a>.
+                    </p>
+                </div>
+
+                <!-- Google Gemini API Key Input -->
+                <div class="p-3 bg-red-50 dark:bg-slate-800/80 border-2 border-spidey-red rounded-xl space-y-1">
+                    <label class="block font-bold font-subhead text-spidey-red dark:text-red-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-spider"></i> Google Gemini API Key
+                    </label>
+                    <input type="password" id="geminiApiKeyInput" placeholder="Tempelkan Gemini Key (AIzaSy...)" class="w-full bg-white dark:bg-slate-900 border-2 border-slate-900 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none font-mono text-xs">
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">
+                        Dapatkan API Key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-spidey-red font-bold underline">Google AI Studio</a>.
+                    </p>
+                </div>
+
+                <!-- Model Choice Select -->
+                <div>
+                    <label class="block font-bold font-subhead text-slate-700 dark:text-slate-300 mb-1">Pilihan Engine / Model AI</label>
+                    <select id="modelSelect" class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-900 rounded-xl px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none font-bold">
+                        <optgroup label="🧠 Anthropic Claude Models (Butuh Claude Key)">
+                            <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet (Penalaran & Kode Terbaik)</option>
+                            <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Super Cepat & Efisien)</option>
+                        </optgroup>
+                        <optgroup label="🤖 OpenAI ChatGPT Models (Butuh OpenAI Key)">
+                            <option value="gpt-4o-mini">ChatGPT GPT-4o Mini (Sangat Cepat & Hemat)</option>
+                            <option value="gpt-4o">ChatGPT GPT-4o (Cerdas & Maksimal)</option>
+                            <option value="gpt-3.5-turbo">ChatGPT GPT-3.5 Turbo</option>
+                        </optgroup>
+                        <optgroup label="🕸️ Google Gemini Models (Butuh Gemini Key)">
+                            <option value="gemini-1.5-flash">Google Gemini 1.5 Flash (Rekomendasi)</option>
+                            <option value="gemini-2.5-flash">Google Gemini 2.5 Flash</option>
+                        </optgroup>
+                        <optgroup label="⚡ Mode Publik Gratis (Bebas Key)">
+                            <option value="openai">ChatGPT Open Engine (Gratis / Free Mode)</option>
+                            <option value="llama">Meta Llama 3 (Gratis / Free Mode)</option>
+                            <option value="mistral">Mistral AI (Gratis / Free Mode)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="p-3 bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 rounded-xl text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-semibold">
+                    <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> <strong>Privasi Aman:</strong> API Key Anda disimpan hanya di penyimpanan lokal browser Anda (`localStorage`) dan dikirimkan langsung ke provider resmi.
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button id="clearApiKeyBtn" class="px-3 py-2 comic-btn bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100 font-bold font-subhead text-xs">
+                        Hapus Semua Key
+                    </button>
+                    <button id="saveSettingsBtn" class="px-5 py-2 comic-btn bg-spidey-yellow text-slate-900 font-bold font-title text-lg tracking-wider">
+                        SIMPAN & HUBUNGKAN ⚡
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE & SPIDER-MAN CANVAS ANIMATIONS -->
+    <script>
+        /* ==========================================================================
+           HELPERS & SAFE STORAGE
+           ========================================================================== */
+        function safeJSONParse(key, fallback) {
+            try {
+                const item = localStorage.getItem(key);
+                return item ? JSON.parse(item) : fallback;
+            } catch (e) {
+                console.warn('Gagal membaca localStorage:', key, e);
+                return fallback;
+            }
+        }
+
+        const APP_STATE = {
+            geminiApiKey: localStorage.getItem('spidey_gemini_key') || '',
+            openAiApiKey: localStorage.getItem('spidey_openai_key') || '',
+            claudeApiKey: localStorage.getItem('spidey_claude_key') || '',
+            currentModel: localStorage.getItem('spidey_free_model') || 'claude-3-5-sonnet-20241022',
+            soundEnabled: localStorage.getItem('spidey_sound') !== 'false',
+            theme: localStorage.getItem('spidey_theme') || 'night',
+            activePersonaKey: 'peter',
+            spideyStatus: 'idle', // 'idle' | 'thinking' | 'speaking'
+            currentChatId: null,
+            chats: safeJSONParse('spidey_chats', []),
+            notes: safeJSONParse('spidey_notes', []),
+            attachedImage: null
+        };
+
+        const PERSONAS = {
+            peter: {
+                name: 'Peter Faro (Spidey Faro)',
+                icon: 'fa-spider',
+                color: 'bg-spidey-red',
+                prompt: 'Kamu adalah Peter Faro (Spidey Faro), asisten superhero cerdas, jenaka, super cepat, dan ramah dalam bahasa Indonesia. Gunakan sedikit humor Spider-Man, analogi sains seru, dan berikan jawaban yang sangat membantu!'
+            },
+            miles: {
+                name: 'Miles Morales (Brooklyn Spidey)',
+                icon: 'fa-bolt',
+                color: 'bg-spidey-yellow',
+                prompt: 'Kamu adalah Miles Morales (Spider-Man dari Brooklyn). Gaya bicaramu santai, keren, penuh energi kreatif, musik, seni, dan empati. Bantu pengguna dengan solusi cepat dan menyenangkan!'
+            },
+            gwen: {
+                name: 'Spider-Gwen (Ghost-Spider)',
+                icon: 'fa-mask',
+                color: 'bg-spidey-blue',
+                prompt: 'Kamu adalah Gwen Stacy (Ghost-Spider). Gaya bicaramu tegas, fokus, taktis, cerdas, dan efisien. Berikan jawaban terstruktur dan langsung ke poin utama.'
+            },
+            miguel: {
+                name: 'Spider-Man 2099 (Miguel O\'Hara)',
+                icon: 'fa-laptop-code',
+                color: 'bg-purple-600',
+                prompt: 'Kamu adalah Miguel O\'Hara (Spider-Man 2099), Pakar Teknologi & Pemrograman. Berikan penjelasan pemrograman bersih, logika terstruktur, dan presisi tinggi.'
+            }
+        };
+
+        const PRESET_CHIPS = [
+            { text: 'Bantu Buatkan Kode Pemrograman 💻', icon: 'fa-code' },
+            { text: 'Jelaskan Konsep Sains & Fisika ⚛️', icon: 'fa-atom' },
+            { text: 'Ide Konten & Kreativitas Seru 🎨', icon: 'fa-palette' },
+            { text: 'Susun Jadwal & Target Harian 📋', icon: 'fa-list-check' }
+        ];
+
+        /* ==========================================================================
+           WEB AUDIO SYNTHESIZER
+           ========================================================================== */
+        const SpideySFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
+            play(type) {
+                if (!APP_STATE.soundEnabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+
+                    if (type === 'thwip') {
+                        const bufferSize = this.ctx.sampleRate * 0.12;
+                        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                        const output = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            output[i] = Math.random() * 2 - 1;
+                        }
+
+                        const whiteNoise = this.ctx.createBufferSource();
+                        whiteNoise.buffer = buffer;
+
+                        const filter = this.ctx.createBiquadFilter();
+                        filter.type = 'bandpass';
+                        filter.frequency.setValueAtTime(3000, now);
+                        filter.frequency.exponentialRampToValueAtTime(400, now + 0.12);
+                        filter.Q.setValueAtTime(3, now);
+
+                        const gain = this.ctx.createGain();
+                        gain.gain.setValueAtTime(0.3, now);
+                        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+                        whiteNoise.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(this.ctx.destination);
+
+                        whiteNoise.start(now);
+                        whiteNoise.stop(now + 0.12);
+                    } else if (type === 'pop') {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(500, now);
+                        osc.frequency.exponentialRampToValueAtTime(900, now + 0.06);
+
+                        gain.gain.setValueAtTime(0.15, now);
+                        gain.gain.linearRampToValueAtTime(0.01, now + 0.06);
+
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.06);
+                    }
+                } catch(e) {
+                    console.warn('Audio error:', e);
+                }
+            }
+        };
+
+        /* ==========================================================================
+           FULL SPIDER-MAN COMIC BACKGROUND CANVAS
+           ========================================================================== */
+        class SpiderComicBackground {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.time = 0;
+                this.webShoots = [];
+                this.comicPopups = [];
+                this.buildings = [];
+
+                this.resize();
+                this.initCity();
+
+                window.addEventListener('resize', () => {
+                    this.resize();
+                    this.initCity();
+                });
+
+                window.addEventListener('mousedown', (e) => this.triggerWebShoot(e.clientX, e.clientY));
+                window.addEventListener('touchstart', (e) => {
+                    if (e.touches && e.touches[0]) this.triggerWebShoot(e.touches[0].clientX, e.touches[0].clientY);
+                }, { passive: true });
+
+                this.animate();
+            }
+
+            resize() {
+                if (!this.canvas) return;
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            initCity() {
+                if (!this.canvas) return;
+                this.buildings = [];
+                const w = this.canvas.width;
+                const count = Math.ceil(w / 75) + 2;
+                for (let i = 0; i < count; i++) {
+                    const bWidth = 65 + Math.random() * 45;
+                    const bHeight = 140 + Math.random() * 220;
+                    this.buildings.push({
+                        x: i * 70 - 20,
+                        width: bWidth,
+                        height: bHeight,
+                        windows: Array.from({ length: Math.floor(bHeight / 26) }, () =>
+                            Array.from({ length: Math.floor(bWidth / 20) }, () => Math.random() > 0.35)
+                        ),
+                        antenna: Math.random() > 0.5
+                    });
+                }
+            }
+
+            triggerWebShoot(targetX, targetY) {
+                SpideySFX.play('thwip');
+
+                const originX = this.canvas.width * 0.5 + Math.sin(this.time) * 120;
+                const originY = 0;
+
+                this.webShoots.push({
+                    startX: originX,
+                    startY: originY,
+                    targetX: targetX,
+                    targetY: targetY,
+                    progress: 0,
+                    life: 1.0
+                });
+
+                const words = ['THWIP!', 'CLAUDE ONLINE!', 'CHATGPT READY!', 'GEMINI POWER!', 'BOOM!'];
+                this.comicPopups.push({
+                    x: targetX,
+                    y: targetY,
+                    text: words[Math.floor(Math.random() * words.length)],
+                    scale: 0.2,
+                    alpha: 1.0,
+                    rotation: (Math.random() - 0.5) * 0.5
+                });
+            }
+
+            animate() {
+                if (!this.ctx) return;
+                this.time += 0.035;
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+
+                this.ctx.clearRect(0, 0, w, h);
+
+                this.buildings.forEach((b) => {
+                    const bY = h - b.height;
+                    
+                    this.ctx.save();
+                    this.ctx.fillStyle = '#0f172a';
+                    this.ctx.strokeStyle = '#1e293b';
+                    this.ctx.lineWidth = 3;
+                    this.ctx.fillRect(b.x, bY, b.width, b.height);
+                    this.ctx.strokeRect(b.x, bY, b.width, b.height);
+
+                    if (b.antenna) {
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(b.x + b.width / 2, bY);
+                        this.ctx.lineTo(b.x + b.width / 2, bY - 30);
+                        this.ctx.stroke();
+
+                        this.ctx.fillStyle = '#ef4444';
+                        this.ctx.beginPath();
+                        this.ctx.arc(b.x + b.width / 2, bY - 30, 3.5, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+
+                    b.windows.forEach((row, rIdx) => {
+                        row.forEach((isOn, cIdx) => {
+                            if (isOn) {
+                                this.ctx.fillStyle = '#facc15';
+                                this.ctx.fillRect(b.x + 10 + cIdx * 18, bY + 15 + rIdx * 24, 10, 14);
+                            }
+                        });
+                    });
+                    this.ctx.restore();
+                });
+
+                this.drawWebCorner(0, 0, 180, 0);
+                this.drawWebCorner(w, 0, 180, Math.PI / 2);
+
+                const swingX = w * 0.5;
+                const swingY = -20;
+                const radius = Math.min(w, h) * 0.38;
+                const angle = Math.sin(this.time * 1.2) * 0.6;
+
+                const spideyX = swingX + Math.sin(angle) * radius;
+                const spideyY = swingY + Math.cos(angle) * radius;
+
+                this.ctx.save();
+                this.ctx.strokeStyle = '#ffffff';
+                this.ctx.lineWidth = 3.5;
+                this.ctx.beginPath();
+                this.ctx.moveTo(swingX, swingY);
+                this.ctx.lineTo(spideyX, spideyY);
+                this.ctx.stroke();
+
+                this.ctx.translate(spideyX, spideyY);
+                this.ctx.rotate(-angle * 0.75);
+
+                this.ctx.fillStyle = '#ef4444';
+                this.ctx.strokeStyle = '#0f172a';
+                this.ctx.lineWidth = 3.5;
+                this.ctx.beginPath();
+                this.ctx.ellipse(0, 0, 24, 20, 0, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                this.ctx.fillStyle = '#2563eb';
+                this.ctx.beginPath();
+                this.ctx.arc(0, 12, 12, 0, Math.PI);
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                this.drawSpideyEye(-9, -4, false);
+                this.drawSpideyEye(9, -4, true);
+
+                this.ctx.restore();
+
+                for (let i = this.webShoots.length - 1; i >= 0; i--) {
+                    const ws = this.webShoots[i];
+                    ws.progress = Math.min(1.0, ws.progress + 0.18);
+                    ws.life -= 0.025;
+
+                    if (ws.life <= 0) {
+                        this.webShoots.splice(i, 1);
+                        continue;
+                    }
+
+                    const currX = ws.startX + (ws.targetX - ws.startX) * ws.progress;
+                    const currY = ws.startY + (ws.targetY - ws.startY) * ws.progress;
+
+                    this.ctx.save();
+                    this.ctx.globalAlpha = ws.life;
+                    this.ctx.strokeStyle = '#ffffff';
+                    this.ctx.lineWidth = 4;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(ws.startX, ws.startY);
+                    this.ctx.lineTo(currX, currY);
+                    this.ctx.stroke();
+
+                    this.ctx.strokeStyle = '#ef4444';
+                    this.ctx.lineWidth = 1.5;
+                    this.ctx.stroke();
+                    this.ctx.restore();
+                }
+
+                for (let i = this.comicPopups.length - 1; i >= 0; i--) {
+                    const cp = this.comicPopups[i];
+                    cp.scale = Math.min(1.25, cp.scale + 0.12);
+                    cp.alpha -= 0.025;
+                    cp.y -= 0.6;
+
+                    if (cp.alpha <= 0) {
+                        this.comicPopups.splice(i, 1);
+                        continue;
+                    }
+
+                    this.ctx.save();
+                    this.ctx.translate(cp.x, cp.y);
+                    this.ctx.rotate(cp.rotation);
+                    this.ctx.scale(cp.scale, cp.scale);
+                    this.ctx.globalAlpha = cp.alpha;
+
+                    this.ctx.fillStyle = '#facc15';
+                    this.ctx.strokeStyle = '#0f172a';
+                    this.ctx.lineWidth = 3.5;
+
+                    this.ctx.beginPath();
+                    const pts = 12;
+                    for (let p = 0; p < pts; p++) {
+                        const r = (p % 2 === 0) ? 32 : 18;
+                        const a = (p / pts) * Math.PI * 2;
+                        const px = Math.cos(a) * r;
+                        const py = Math.sin(a) * r;
+                        if (p === 0) this.ctx.moveTo(px, py);
+                        else this.ctx.lineTo(px, py);
+                    }
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                    this.ctx.stroke();
+
+                    this.ctx.fillStyle = '#ef4444';
+                    this.ctx.font = '900 14px Bangers, cursive';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.fillText(cp.text, 0, 2);
+                    this.ctx.restore();
+                }
+
+                requestAnimationFrame(() => this.animate());
+            }
+
+            drawSpideyEye(x, y, isRight) {
+                this.ctx.save();
+                this.ctx.translate(x, y);
+                if (isRight) this.ctx.scale(-1, 1);
+
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.strokeStyle = '#0f172a';
+                this.ctx.lineWidth = 3;
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(-9, -6);
+                this.ctx.quadraticCurveTo(2, -11, 9, 0);
+                this.ctx.quadraticCurveTo(0, 11, -9, -6);
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                this.ctx.restore();
+            }
+
+            drawWebCorner(x, y, size, rotation) {
+                this.ctx.save();
+                this.ctx.translate(x, y);
+                this.ctx.rotate(rotation);
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+                this.ctx.lineWidth = 2;
+
+                for (let i = 0; i <= 4; i++) {
+                    const a = (i / 4) * (Math.PI / 2);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, 0);
+                    this.ctx.lineTo(Math.cos(a) * size, Math.sin(a) * size);
+                    this.ctx.stroke();
+                }
+
+                for (let r = 35; r <= size; r += 35) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(0, 0, r, 0, Math.PI / 2);
+                    this.ctx.stroke();
+                }
+                this.ctx.restore();
+            }
+        }
+
+        /* ==========================================================================
+           CHIBI ANIMATED SPIDER-MAN MASCOT
+           ========================================================================== */
+        class ChibiSpideyMascot {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.time = 0;
+                this.lensState = 'normal';
+                this.blinkTimer = 0;
+
+                this.canvas.addEventListener('click', () => {
+                    SpideySFX.play('thwip');
+                    this.lensState = 'wink';
+                    setTimeout(() => this.lensState = 'normal', 600);
+                });
+
+                this.animate();
+            }
+
+            animate() {
+                if (!this.ctx) return;
+                this.time += 0.045;
+                this.blinkTimer++;
+
+                if (this.blinkTimer > 140 && this.lensState === 'normal') {
+                    this.lensState = 'squint';
+                    if (this.blinkTimer > 155) {
+                        this.lensState = 'normal';
+                        this.blinkTimer = 0;
+                    }
+                }
+
+                const cx = this.canvas.width / 2;
+                const cy = this.canvas.height / 2 + Math.sin(this.time) * 6;
+
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                if (APP_STATE.spideyStatus === 'thinking') {
+                    this.ctx.save();
+                    this.ctx.strokeStyle = '#facc15';
+                    this.ctx.lineWidth = 3.5;
+
+                    for (let i = 0; i < 6; i++) {
+                        const angle = (i / 6) * Math.PI * 2 + this.time * 2;
+                        const rx1 = cx + Math.cos(angle) * 65;
+                        const ry1 = cy + Math.sin(angle) * 65;
+                        const rx2 = cx + Math.cos(angle) * 85;
+                        const ry2 = cy + Math.sin(angle) * 85;
+
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(rx1, ry1);
+                        this.ctx.lineTo(rx2, ry2);
+                        this.ctx.stroke();
+                    }
+                    this.ctx.restore();
+                }
+
+                this.ctx.save();
+                this.ctx.fillStyle = '#ef4444';
+                this.ctx.strokeStyle = '#0f172a';
+                this.ctx.lineWidth = 4;
+
+                this.ctx.beginPath();
+                this.ctx.ellipse(cx, cy, 60, 54, 0, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                this.ctx.strokeStyle = '#0f172a';
+                this.ctx.lineWidth = 1.5;
+                for (let a = 0; a < Math.PI * 2; a += Math.PI / 4) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(cx, cy);
+                    this.ctx.lineTo(cx + Math.cos(a) * 58, cy + Math.sin(a) * 52);
+                    this.ctx.stroke();
+                }
+                for (let r = 20; r <= 50; r += 15) {
+                    this.ctx.beginPath();
+                    this.ctx.ellipse(cx, cy, r, r * 0.9, 0, 0, Math.PI * 2);
+                    this.ctx.stroke();
+                }
+
+                this.drawLens(cx - 24, cy - 2, false);
+                this.drawLens(cx + 24, cy - 2, true);
+
+                this.ctx.fillStyle = '#0f172a';
+                this.ctx.beginPath();
+                this.ctx.arc(cx, cy + 34, 5, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                this.ctx.restore();
+                requestAnimationFrame(() => this.animate());
+            }
+
+            drawLens(x, y, isRight) {
+                this.ctx.save();
+                this.ctx.translate(x, y);
+                if (isRight) this.ctx.scale(-1, 1);
+
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.strokeStyle = '#0f172a';
+                this.ctx.lineWidth = 4.5;
+
+                const isSquint = this.lensState === 'squint' || (APP_STATE.spideyStatus === 'thinking' && !isRight);
+                const isWink = this.lensState === 'wink' && isRight;
+
+                this.ctx.beginPath();
+                if (isWink) {
+                    this.ctx.moveTo(-18, 0);
+                    this.ctx.lineTo(18, 0);
+                } else if (isSquint) {
+                    this.ctx.moveTo(-20, -4);
+                    this.ctx.quadraticCurveTo(0, -6, 20, 2);
+                    this.ctx.quadraticCurveTo(0, 10, -20, -4);
+                } else {
+                    this.ctx.moveTo(-22, -14);
+                    this.ctx.quadraticCurveTo(2, -22, 22, 2);
+                    this.ctx.quadraticCurveTo(0, 24, -22, -14);
+                }
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                this.ctx.restore();
+            }
+        }
+
+        /* ==========================================================================
+           INITIALIZATION & BINDING
+           ========================================================================== */
+        let bgCanvasObj, mascotObj;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bgCanvasObj = new SpiderComicBackground('bgCanvas');
+            mascotObj = new ChibiSpideyMascot('mascotCanvas');
+
+            loadStateUI();
+            setupEventListeners();
+            renderPersonas();
+            renderPresets();
+            renderChatHistory();
+            renderNotes();
+
+            if (APP_STATE.chats.length === 0) {
+                createNewChatSession();
+            } else {
+                selectChatSession(APP_STATE.chats[0].id);
+            }
+        });
+
+        /* ==========================================================================
+           UI HELPERS & RENDERERS
+           ========================================================================== */
+        function loadStateUI() {
+            document.getElementById('modelSelect').value = APP_STATE.currentModel;
+            document.getElementById('geminiApiKeyInput').value = APP_STATE.geminiApiKey;
+            document.getElementById('openAiApiKeyInput').value = APP_STATE.openAiApiKey;
+            document.getElementById('claudeApiKeyInput').value = APP_STATE.claudeApiKey;
+
+            const isClaudeModel = APP_STATE.currentModel.startsWith('claude-');
+            const isGptModel = APP_STATE.currentModel.startsWith('gpt-');
+            const isGeminiModel = APP_STATE.currentModel.startsWith('gemini-');
+            
+            const hasClaudeKey = Boolean(APP_STATE.claudeApiKey && APP_STATE.claudeApiKey.length > 5);
+            const hasOpenAiKey = Boolean(APP_STATE.openAiApiKey && APP_STATE.openAiApiKey.length > 5);
+            const hasGeminiKey = Boolean(APP_STATE.geminiApiKey && APP_STATE.geminiApiKey.length > 5);
+
+            // Update Header & Sidebar Badges
+            const modelTag = document.getElementById('modelTag');
+            const statusTag = document.getElementById('statusTagBadge');
+            const inputBadge = document.getElementById('inputModeBadge');
+
+            if (isClaudeModel && hasClaudeKey) {
+                modelTag.innerText = APP_STATE.currentModel.toUpperCase() + ' (Claude Key)';
+                statusTag.innerText = 'Claude Key Connected';
+                statusTag.className = 'text-[10px] px-2 py-0.5 rounded-full bg-purple-600 text-white font-bold';
+                inputBadge.innerHTML = `<i class="fa-solid fa-brain text-xs"></i> Claude AI Active`;
+                inputBadge.className = 'text-purple-400 font-bold flex items-center gap-1';
+            } else if (isGptModel && hasOpenAiKey) {
+                modelTag.innerText = APP_STATE.currentModel.toUpperCase() + ' (ChatGPT Key)';
+                statusTag.innerText = 'ChatGPT Key Connected';
+                statusTag.className = 'text-[10px] px-2 py-0.5 rounded-full bg-spidey-blue text-white font-bold';
+                inputBadge.innerHTML = `<i class="fa-solid fa-bolt text-xs"></i> ChatGPT API Active`;
+                inputBadge.className = 'text-spidey-blue font-bold flex items-center gap-1';
+            } else if (isGeminiModel && hasGeminiKey) {
+                modelTag.innerText = APP_STATE.currentModel.toUpperCase() + ' (Gemini Key)';
+                statusTag.innerText = 'Gemini Key Connected';
+                statusTag.className = 'text-[10px] px-2 py-0.5 rounded-full bg-spidey-red text-white font-bold';
+                inputBadge.innerHTML = `<i class="fa-solid fa-key text-xs"></i> Gemini API Active`;
+                inputBadge.className = 'text-spidey-red font-bold flex items-center gap-1';
+            } else {
+                modelTag.innerText = APP_STATE.currentModel.toUpperCase() + ' (FREE)';
+                statusTag.innerText = 'Mode Bebas Key';
+                statusTag.className = 'text-[10px] px-2 py-0.5 rounded-full bg-emerald-500 text-white font-bold';
+                inputBadge.innerHTML = `<i class="fa-solid fa-circle-check text-xs"></i> Mode Bebas Key`;
+                inputBadge.className = 'text-emerald-500 font-bold flex items-center gap-1';
+            }
+
+            if (APP_STATE.theme === 'night') {
+                document.documentElement.classList.remove('day');
+                document.documentElement.classList.add('night', 'dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-moon text-base';
+            } else {
+                document.documentElement.classList.remove('night', 'dark');
+                document.documentElement.classList.add('day');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun text-base';
+            }
+        }
+
+        function setSpideyStatus(status, text) {
+            APP_STATE.spideyStatus = status;
+            document.getElementById('spideyStatusText').innerText = text;
+
+            const iconEl = document.getElementById('headerStatusIcon');
+            if (status === 'thinking') iconEl.className = 'fa-solid fa-bolt text-spidey-yellow text-xl animate-pulse';
+            else if (status === 'speaking') iconEl.className = 'fa-solid fa-comment-dots text-white text-xl';
+            else iconEl.className = 'fa-solid fa-spider text-white text-xl';
+        }
+
+        function renderPersonas() {
+            const container = document.getElementById('personaContainer');
+            container.innerHTML = Object.keys(PERSONAS).map(key => {
+                const p = PERSONAS[key];
+                const isActive = key === APP_STATE.activePersonaKey;
+                return `
+                    <button data-persona="${key}" class="persona-select-btn p-2.5 comic-btn text-left font-subhead flex items-center gap-2 ${
+                        isActive 
+                        ? 'bg-spidey-yellow text-slate-900 font-bold' 
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                    }">
+                        <i class="fa-solid ${p.icon} text-sm"></i>
+                        <span class="text-xs truncate font-bold">${p.name.split(' ')[0]}</span>
+                    </button>
+                `;
+            }).join('');
+
+            const activeP = PERSONAS[APP_STATE.activePersonaKey];
+            document.getElementById('currentPersonaName').innerText = activeP.name.split(' (')[0];
+        }
+
+        function selectPersona(key) {
+            SpideySFX.play('pop');
+            APP_STATE.activePersonaKey = key;
+            renderPersonas();
+        }
+
+        function renderPresets() {
+            const container = document.getElementById('presetChipsContainer');
+            container.innerHTML = PRESET_CHIPS.map((chip, idx) => `
+                <button data-preset-idx="${idx}" class="preset-chip-btn px-3.5 py-2 comic-btn bg-white dark:bg-slate-800 text-xs font-bold font-subhead text-slate-900 dark:text-slate-100 flex items-center gap-2 hover:bg-spidey-yellow transition-colors">
+                    <i class="fa-solid ${chip.icon} text-spidey-red"></i>
+                    <span>${chip.text}</span>
+                </button>
+            `).join('');
+        }
+
+        function safeMarkdown(text) {
+            if (typeof marked !== 'undefined' && typeof marked.parse === 'function') {
+                try {
+                    return marked.parse(text || '');
+                } catch(e) {
+                    console.error('Markdown Parse Error:', e);
+                }
+            }
+            return escapeHtml(text || '').replace(/\n/g, '<br>');
+        }
+
+        /* ==========================================================================
+           CHAT SESSIONS & CHAT FLOW
+           ========================================================================== */
+        function createNewChatSession() {
+            SpideySFX.play('thwip');
+            const newChat = {
+                id: 'chat_' + Date.now(),
+                title: 'Misi Spidey Faro',
+                messages: []
+            };
+            APP_STATE.chats.unshift(newChat);
+            saveChatsToStorage();
+            selectChatSession(newChat.id);
+        }
+
+        function selectChatSession(id) {
+            APP_STATE.currentChatId = id;
+            renderChatHistory();
+            renderMessages();
+
+            const currentChat = APP_STATE.chats.find(c => c.id === id);
+            const heroSection = document.getElementById('heroOrbSection');
+            if (currentChat && currentChat.messages.length > 0) {
+                heroSection.classList.add('hidden');
+            } else {
+                heroSection.classList.remove('hidden');
+            }
+        }
+
+        function renderChatHistory() {
+            const list = document.getElementById('chatHistoryList');
+            const searchVal = document.getElementById('searchChatInput').value.toLowerCase();
+            const filtered = APP_STATE.chats.filter(c => c.title.toLowerCase().includes(searchVal));
+
+            list.innerHTML = filtered.map(chat => {
+                const isActive = chat.id === APP_STATE.currentChatId;
+                return `
+                    <div data-chat-id="${chat.id}" class="chat-history-item p-2.5 comic-btn flex items-center justify-between cursor-pointer ${
+                        isActive 
+                        ? 'bg-spidey-red font-bold text-white' 
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                    }">
+                        <div class="flex items-center gap-2 truncate">
+                            <i class="fa-solid fa-spider text-xs"></i>
+                            <span class="text-xs truncate max-w-[160px] font-subhead font-semibold">${escapeHtml(chat.title)}</span>
+                        </div>
+                        <button data-delete-id="${chat.id}" class="delete-chat-btn p-1 hover:text-spidey-yellow">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteChatSession(id) {
+            APP_STATE.chats = APP_STATE.chats.filter(c => c.id !== id);
+            saveChatsToStorage();
+            if (APP_STATE.chats.length === 0) createNewChatSession();
+            else selectChatSession(APP_STATE.chats[0].id);
+        }
+
+        function saveChatsToStorage() {
+            localStorage.setItem('spidey_chats', JSON.stringify(APP_STATE.chats));
+        }
+
+        function renderMessages() {
+            const list = document.getElementById('messagesList');
+            const currentChat = APP_STATE.chats.find(c => c.id === APP_STATE.currentChatId);
+
+            if (!currentChat || currentChat.messages.length === 0) {
+                list.innerHTML = '';
+                return;
+            }
+
+            list.innerHTML = currentChat.messages.map((msg, index) => {
+                const isUser = msg.role === 'user';
+                return `
+                    <div class="flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}">
+                        ${!isUser ? `
+                            <div class="w-10 h-10 rounded-2xl bg-spidey-red border-2 border-slate-900 flex items-center justify-center text-white shrink-0 font-bold shadow-[2px_2px_0px_0px_#0f172a]">
+                                🕷️
+                            </div>
+                        ` : ''}
+
+                        <div class="max-w-[85%] md:max-w-[75%] space-y-1">
+                            <div class="comic-box p-4 text-xs md:text-sm leading-relaxed ${
+                                isUser 
+                                ? 'bg-spidey-yellow text-slate-900 font-medium' 
+                                : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100'
+                            }">
+                                ${msg.image ? `<img src="${msg.image}" class="max-h-48 rounded-xl border-2 border-slate-900 mb-2">` : ''}
+                                <div class="markdown-body">${isUser ? escapeHtml(msg.text).replace(/\n/g, '<br>') : safeMarkdown(msg.text)}</div>
+                            </div>
+
+                            ${!isUser ? `
+                                <div class="flex items-center gap-3 pt-1 text-[11px] font-bold font-subhead text-slate-400">
+                                    <button data-action="copy" data-msg-idx="${index}" class="msg-action-btn hover:text-spidey-yellow flex items-center gap-1">
+                                        <i class="fa-regular fa-copy"></i> Salin
+                                    </button>
+                                    <button data-action="speak" data-msg-idx="${index}" class="msg-action-btn hover:text-spidey-yellow flex items-center gap-1">
+                                        <i class="fa-solid fa-volume-high"></i> Baca Suara
+                                    </button>
+                                    <button data-action="note" data-msg-idx="${index}" class="msg-action-btn hover:text-spidey-yellow flex items-center gap-1">
+                                        <i class="fa-solid fa-newspaper"></i> Ke Bugle Note
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        ${isUser ? `
+                            <div class="w-10 h-10 rounded-2xl bg-spidey-blue border-2 border-slate-900 flex items-center justify-center text-white shrink-0 font-bold shadow-[2px_2px_0px_0px_#0f172a]">
+                                👤
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // Highlight code blocks and add copy buttons
+            if (typeof hljs !== 'undefined') {
+                list.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            }
+
+            // Fitur Baru: Tombol "Salin Kode" Otomatis pada setiap Blok Kode Markdown
+            list.querySelectorAll('pre').forEach((pre) => {
+                if (!pre.querySelector('.code-copy-btn')) {
+                    pre.classList.add('relative', 'group');
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'code-copy-btn absolute top-2 right-2 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-mono rounded border border-slate-600 opacity-80 hover:opacity-100 transition-opacity flex items-center gap-1 z-10';
+                    copyBtn.innerHTML = '<i class="fa-regular fa-copy text-xs"></i> Salin Kode';
+                    copyBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        const codeText = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+                        copyToClipboard(codeText);
+                        copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 text-xs"></i> Tersalin!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fa-regular fa-copy text-xs"></i> Salin Kode';
+                        }, 2000);
+                    };
+                    pre.appendChild(copyBtn);
+                }
+            });
+
+            const container = document.getElementById('chatContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        /* ==========================================================================
+           HYBRID AI ENGINE (ANTHROPIC CLAUDE, CHATGPT OPENAI, GOOGLE GEMINI, FREE FALLBACK)
+           ========================================================================== */
+        async function fetchAIResponse(promptText, historyMsgs) {
+            const systemPrompt = PERSONAS[APP_STATE.activePersonaKey].prompt;
+            const model = APP_STATE.currentModel;
+
+            // 1. ANTHROPIC CLAUDE API DIREK (Jika model claude- & ada Claude Key)
+            if (model.startsWith('claude-') && APP_STATE.claudeApiKey && APP_STATE.claudeApiKey.trim().length > 5) {
+                try {
+                    const claudeMessages = [];
+
+                    historyMsgs.forEach(m => {
+                        const contentParts = [];
+                        if (m.image) {
+                            const mimeType = m.image.split(';')[0].split(':')[1] || 'image/png';
+                            const base64Data = m.image.split(',')[1];
+                            contentParts.push({
+                                type: 'image',
+                                source: {
+                                    type: 'base64',
+                                    media_type: mimeType,
+                                    data: base64Data
+                                }
+                            });
+                        }
+                        if (m.text) {
+                            contentParts.push({ type: 'text', text: m.text });
+                        }
+                        
+                        claudeMessages.push({
+                            role: m.role === 'user' ? 'user' : 'assistant',
+                            content: contentParts.length === 1 && contentParts[0].type === 'text' ? m.text : contentParts
+                        });
+                    });
+
+                    const res = await fetch('https://api.anthropic.com/v1/messages', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-api-key': APP_STATE.claudeApiKey.trim(),
+                            'anthropic-version': '2023-06-01',
+                            'anthropic-dangerous-direct-browser-access': 'true'
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            max_tokens: 1500,
+                            system: systemPrompt,
+                            messages: claudeMessages
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const errJson = await res.json().catch(() => ({}));
+                        throw new Error(errJson.error?.message || `HTTP ${res.status}`);
+                    }
+
+                    const data = await res.json();
+                    const reply = data.content?.[0]?.text;
+                    if (reply) return reply;
+                } catch (claudeError) {
+                    console.warn("Koneksi Anthropic Claude API Gagal. Mengalihkan ke Fallback Engine...", claudeError);
+                }
+            }
+
+            // 2. CHATGPT / OPENAI API DIREK (Jika model gpt- & ada OpenAI Key)
+            if (model.startsWith('gpt-') && APP_STATE.openAiApiKey && APP_STATE.openAiApiKey.trim().length > 5) {
+                try {
+                    const openAiMessages = [
+                        { role: 'system', content: systemPrompt }
+                    ];
+
+                    historyMsgs.forEach(m => {
+                        if (m.role === 'user' && m.image) {
+                            openAiMessages.push({
+                                role: 'user',
+                                content: [
+                                    { type: 'text', text: m.text || '' },
+                                    { type: 'image_url', image_url: { url: m.image } }
+                                ]
+                            });
+                        } else {
+                            openAiMessages.push({
+                                role: m.role === 'user' ? 'user' : 'assistant',
+                                content: m.text || ''
+                            });
+                        }
+                    });
+
+                    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${APP_STATE.openAiApiKey.trim()}`
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: openAiMessages
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const errJson = await res.json().catch(() => ({}));
+                        throw new Error(errJson.error?.message || `HTTP ${res.status}`);
+                    }
+
+                    const data = await res.json();
+                    const reply = data.choices?.[0]?.message?.content;
+                    if (reply) return reply;
+                } catch (openAiError) {
+                    console.warn("Koneksi ChatGPT OpenAI API Gagal. Mengalihkan ke Fallback Engine...", openAiError);
+                }
+            }
+
+            // 3. GOOGLE GEMINI API DIREK (Perbaikan Sanitasi Urutan Role untuk Mencegah Error 400)
+            if (model.startsWith('gemini') && APP_STATE.geminiApiKey && APP_STATE.geminiApiKey.trim().length > 5) {
+                try {
+                    const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${APP_STATE.geminiApiKey.trim()}`;
+                    const geminiContents = [];
+
+                    historyMsgs.forEach(m => {
+                        const parts = [];
+                        if (m.image) {
+                            const base64Data = m.image.split(',')[1];
+                            const mimeType = m.image.split(';')[0].split(':')[1] || 'image/png';
+                            parts.push({
+                                inlineData: { mimeType: mimeType, data: base64Data }
+                            });
+                        }
+                        if (m.text) {
+                            parts.push({ text: m.text });
+                        }
+                        if (parts.length > 0) {
+                            const role = m.role === 'user' ? 'user' : 'model';
+                            // Validasi: Gabungkan jika ada dua peran berturut-turut agar Gemini API tidak menolak payload (HTTP 400)
+                            if (geminiContents.length > 0 && geminiContents[geminiContents.length - 1].role === role) {
+                                geminiContents[geminiContents.length - 1].parts.push(...parts);
+                            } else {
+                                geminiContents.push({ role: role, parts: parts });
+                            }
+                        }
+                    });
+
+                    const response = await fetch(geminiEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            systemInstruction: { parts: [{ text: systemPrompt }] },
+                            contents: geminiContents
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errJson = await response.json().catch(() => ({}));
+                        throw new Error(errJson.error?.message || `HTTP ${response.status}`);
+                    }
+
+                    const resData = await response.json();
+                    const outputText = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (outputText) return outputText;
+                } catch (geminiError) {
+                    console.warn("Koneksi Gemini API Gagal. Mengalihkan ke Server Publik...", geminiError);
+                }
+            }
+
+            // 4. MODE PUBLIK GRATIS FALLBACK (Pollinations Free AI Engine)
+            const formattedMessages = [
+                { role: 'system', content: systemPrompt }
+            ];
+
+            historyMsgs.forEach(m => {
+                if (m.text) {
+                    formattedMessages.push({
+                        role: m.role === 'user' ? 'user' : 'assistant',
+                        content: m.text
+                    });
+                }
+            });
+
+            try {
+                const freeModelChoice = model.startsWith('gemini') || model.startsWith('gpt') || model.startsWith('claude') ? 'openai' : model;
+                const res = await fetch('https://text.pollinations.ai/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: formattedMessages,
+                        model: freeModelChoice,
+                        seed: Math.floor(Math.random() * 99999)
+                    })
+                });
+
+                if (!res.ok) throw new Error(`Status HTTP ${res.status}`);
+                const dataText = await res.text();
+                return dataText || "Spidey Faro siap membantu!";
+            } catch (error) {
+                console.warn("Koneksi Server AI Publik gagal, menggunakan Offline Spidey Engine...", error);
+                return generateOfflineSpideyResponse(promptText);
+            }
+        }
+
+        function generateOfflineSpideyResponse(userPrompt) {
+            const lower = userPrompt.toLowerCase();
+            const personaName = PERSONAS[APP_STATE.activePersonaKey].name.split(' ')[0];
+
+            if (lower.includes('halo') || lower.includes('hai') || lower.includes('pagi') || lower.includes('malam')) {
+                return `**THWIP! 🕸️** Halo kawan! Aku **${personaName}**. Ada yang bisa Spidey bantu hari ini? Siap melayani dengan Claude AI, Gemini API, ChatGPT API, maupun Mode Bebas Key!`;
+            }
+            if (lower.includes('siapa kamu') || lower.includes('siapa kamu?')) {
+                return `Aku adalah **${personaName}**, superhero asisten pribadimu! Aku siap membantumu menulis kode, menjawab pertanyaan sains, merencanakan tugas, atau sekadar mengobrol seru! ⚡`;
+            }
+            if (lower.includes('kode') || lower.includes('script') || lower.includes('html') || lower.includes('python') || lower.includes('js')) {
+                return `Tentu! Ini contoh potongan skrip yang rapi untukmu:\n\n\`\`\`javascript\n// Solusi cepat dari Spidey Faro 🕸️\nfunction spideyHelper() {\n    console.log("Spider-Sense, Claude, Gemini & ChatGPT Online!");\n}\nspideyHelper();\n\`\`\`\nAda logika lain yang perlu diselesaikan?`;
+            }
+
+            return `**Spider-Sense Aktif! ⚡**\n\nJawaban untuk permintaanmu ("*${userPrompt}*") berhasil diproses!\n\nSebagai superhero asistenmu, aku siap mendampingimu menyelesaikan misi harian. Ada pertanyaan lanjutan yang ingin diselesaikan? 🕸️`;
+        }
+
+        async function handleSendMessage() {
+            const promptInput = document.getElementById('promptInput');
+            const promptText = promptInput.value.trim();
+
+            if (!promptText && !APP_STATE.attachedImage) return;
+
+            const currentChat = APP_STATE.chats.find(c => c.id === APP_STATE.currentChatId);
+            if (!currentChat) return;
+
+            SpideySFX.play('thwip');
+            document.getElementById('heroOrbSection').classList.add('hidden');
+
+            const userMsg = {
+                role: 'user',
+                text: promptText,
+                image: APP_STATE.attachedImage ? APP_STATE.attachedImage.preview : null
+            };
+            currentChat.messages.push(userMsg);
+
+            if (currentChat.messages.length === 1 && promptText) {
+                currentChat.title = promptText.slice(0, 22) + '...';
+            }
+
+            promptInput.value = '';
+            clearImageAttachment();
+            renderMessages();
+
+            setSpideyStatus('thinking', 'Spidey Faro & Engine AI sedang memproses pesan... ⚡');
+
+            const aiReply = await fetchAIResponse(promptText, currentChat.messages);
+
+            currentChat.messages.push({ role: 'model', text: aiReply });
+            saveChatsToStorage();
+            renderMessages();
+            SpideySFX.play('pop');
+            setSpideyStatus('idle', 'Spidey Online • Siap Menjawab Obrolan! ⚡');
+        }
+
+        /* ==========================================================================
+           MULTIMODAL ATTACHMENT LOGIC
+           ========================================================================== */
+        const imageInput = document.getElementById('imageInput');
+        document.getElementById('attachBtn').addEventListener('click', () => imageInput.click());
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    APP_STATE.attachedImage = {
+                        preview: ev.target.result,
+                        name: file.name
+                    };
+                    document.getElementById('imagePreview').src = ev.target.result;
+                    document.getElementById('imageName').innerText = file.name;
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function clearImageAttachment() {
+            APP_STATE.attachedImage = null;
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            imageInput.value = '';
+        }
+
+        document.getElementById('removeImageBtn').addEventListener('click', clearImageAttachment);
+
+        /* ==========================================================================
+           STT & TTS VOICE ENGINE
+           ========================================================================== */
+        let recognition = null;
+        document.getElementById('micBtn').addEventListener('click', () => {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'id-ID';
+                recognition.onstart = () => setSpideyStatus('thinking', 'Spidey mendengarkan suaramu...');
+                recognition.onresult = (e) => {
+                    document.getElementById('promptInput').value = e.results[0][0].transcript;
+                };
+                recognition.onend = () => setSpideyStatus('idle', 'Spidey Online • Siap Menjawab Obrolan! ⚡');
+                recognition.start();
+            } else {
+                alert('Fitur Speech Recognition belum didukung di browser ini.');
+            }
+        });
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const cleanText = text.replace(/[*_#`]/g, '');
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'id-ID';
+
+            utterance.onstart = () => setSpideyStatus('speaking', 'Spidey sedang bicara...');
+            utterance.onend = () => setSpideyStatus('idle', 'Spidey Online • Siap Menjawab Obrolan! ⚡');
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        /* ==========================================================================
+           DAILY BUGLE NOTES
+           ========================================================================== */
+        function addNote(text) {
+            if (!text.trim()) return;
+            APP_STATE.notes.unshift({ id: 'note_' + Date.now(), content: text });
+            localStorage.setItem('spidey_notes', JSON.stringify(APP_STATE.notes));
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const list = document.getElementById('notesList');
+            document.getElementById('noteCountBadge').innerText = APP_STATE.notes.length;
+            document.getElementById('noteCountBadge').classList.toggle('hidden', APP_STATE.notes.length === 0);
+
+            list.innerHTML = APP_STATE.notes.map(n => `
+                <div class="comic-box p-3 bg-white bugle-tape space-y-2 border-2 border-slate-900">
+                    <p class="text-xs text-slate-900 font-medium whitespace-pre-wrap font-subhead">${escapeHtml(n.content)}</p>
+                    <div class="flex justify-end">
+                        <button data-delete-note="${n.id}" class="delete-note-btn text-xs text-red-600 font-bold hover:underline">
+                            Hapus Kliping
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteNote(id) {
+            APP_STATE.notes = APP_STATE.notes.filter(n => n.id !== id);
+            localStorage.setItem('spidey_notes', JSON.stringify(APP_STATE.notes));
+            renderNotes();
+        }
+
+        function extractToScratchpad(text) {
+            addNote(text.slice(0, 280) + '...');
+            document.getElementById('scratchpadDrawer').classList.remove('translate-x-[120%]');
+        }
+
+        /* ==========================================================================
+           EXPORTS & EVENTS SETUP
+           ========================================================================== */
+        function exportHistory(format) {
+            const chat = APP_STATE.chats.find(c => c.id === APP_STATE.currentChatId);
+            if (!chat) return;
+
+            let content = '', filename = `${chat.title}.${format}`;
+            if (format === 'markdown') {
+                content = `# ${chat.title}\n\n` + chat.messages.map(m => `### ${m.role === 'user' ? 'User' : 'Spidey Faro'}\n${m.text}\n`).join('\n');
+            } else if (format === 'json') {
+                content = JSON.stringify(chat, null, 2);
+            }
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+
+        function setupEventListeners() {
+            // General click listener for dynamic events (Delegation)
+            document.body.addEventListener('click', (e) => {
+                // Persona select
+                const personaBtn = e.target.closest('.persona-select-btn');
+                if (personaBtn) {
+                    selectPersona(personaBtn.dataset.persona);
+                    return;
+                }
+
+                // Preset prompt chip click
+                const presetBtn = e.target.closest('.preset-chip-btn');
+                if (presetBtn) {
+                    const idx = parseInt(presetBtn.dataset.presetIdx, 10);
+                    if (PRESET_CHIPS[idx]) {
+                        SpideySFX.play('thwip');
+                        document.getElementById('promptInput').value = PRESET_CHIPS[idx].text;
+                        document.getElementById('promptInput').focus();
+                    }
+                    return;
+                }
+
+                // Delete chat
+                const delChatBtn = e.target.closest('.delete-chat-btn');
+                if (delChatBtn) {
+                    e.stopPropagation();
+                    deleteChatSession(delChatBtn.dataset.deleteId);
+                    return;
+                }
+
+                // Select chat session
+                const chatItem = e.target.closest('.chat-history-item');
+                if (chatItem) {
+                    selectChatSession(chatItem.dataset.chatId);
+                    return;
+                }
+
+                // Message Action buttons (copy, speak, note)
+                const msgActionBtn = e.target.closest('.msg-action-btn');
+                if (msgActionBtn) {
+                    const action = msgActionBtn.dataset.action;
+                    const msgIdx = parseInt(msgActionBtn.dataset.msgIdx, 10);
+                    const currentChat = APP_STATE.chats.find(c => c.id === APP_STATE.currentChatId);
+                    if (currentChat && currentChat.messages[msgIdx]) {
+                        const targetMsg = currentChat.messages[msgIdx].text || '';
+                        if (action === 'copy') copyToClipboard(targetMsg);
+                        else if (action === 'speak') speakText(targetMsg);
+                        else if (action === 'note') extractToScratchpad(targetMsg);
+                    }
+                    return;
+                }
+
+                // Delete Note
+                const delNoteBtn = e.target.closest('.delete-note-btn');
+                if (delNoteBtn) {
+                    deleteNote(delNoteBtn.dataset.deleteNote);
+                    return;
+                }
+            });
+
+            document.getElementById('sendBtn').addEventListener('click', handleSendMessage);
+
+            // Perbaikan Textarea Auto-Resize sesuai panjang input teks
+            const promptInput = document.getElementById('promptInput');
+            promptInput.addEventListener('input', () => {
+                promptInput.style.height = 'auto';
+                promptInput.style.height = Math.min(promptInput.scrollHeight, 128) + 'px';
+            });
+
+            promptInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                    promptInput.style.height = 'auto';
+                }
+            });
+
+            document.getElementById('newChatBtn').addEventListener('click', createNewChatSession);
+
+            document.getElementById('openSettingsModalBtn').addEventListener('click', () => openModal('settingsModal'));
+            document.getElementById('closeSettingsModalBtn').addEventListener('click', () => closeModal('settingsModal'));
+
+            document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+                const geminiKey = document.getElementById('geminiApiKeyInput').value.trim();
+                const openAiKey = document.getElementById('openAiApiKeyInput').value.trim();
+                const claudeKey = document.getElementById('claudeApiKeyInput').value.trim();
+                const selectedModel = document.getElementById('modelSelect').value;
+
+                APP_STATE.geminiApiKey = geminiKey;
+                APP_STATE.openAiApiKey = openAiKey;
+                APP_STATE.claudeApiKey = claudeKey;
+                APP_STATE.currentModel = selectedModel;
+
+                localStorage.setItem('spidey_gemini_key', geminiKey);
+                localStorage.setItem('spidey_openai_key', openAiKey);
+                localStorage.setItem('spidey_claude_key', claudeKey);
+                localStorage.setItem('spidey_free_model', selectedModel);
+
+                loadStateUI();
+                closeModal('settingsModal');
+                SpideySFX.play('thwip');
+            });
+
+            document.getElementById('clearApiKeyBtn').addEventListener('click', () => {
+                document.getElementById('geminiApiKeyInput').value = '';
+                document.getElementById('openAiApiKeyInput').value = '';
+                document.getElementById('claudeApiKeyInput').value = '';
+                APP_STATE.geminiApiKey = '';
+                APP_STATE.openAiApiKey = '';
+                APP_STATE.claudeApiKey = '';
+                localStorage.removeItem('spidey_gemini_key');
+                localStorage.removeItem('spidey_openai_key');
+                localStorage.removeItem('spidey_claude_key');
+                loadStateUI();
+            });
+
+            document.getElementById('toggleThemeBtn').addEventListener('click', () => {
+                APP_STATE.theme = APP_STATE.theme === 'day' ? 'night' : 'day';
+                localStorage.setItem('spidey_theme', APP_STATE.theme);
+                loadStateUI();
+            });
+
+            document.getElementById('toggleSoundBtn').addEventListener('click', () => {
+                APP_STATE.soundEnabled = !APP_STATE.soundEnabled;
+                localStorage.setItem('spidey_sound', APP_STATE.soundEnabled);
+                document.getElementById('soundIcon').className = APP_STATE.soundEnabled ? 'fa-solid fa-volume-high text-base' : 'fa-solid fa-volume-xmark text-base text-red-400';
+            });
+
+            document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.remove('hidden');
+            });
+
+            document.getElementById('closeSidebarBtn').addEventListener('click', closeSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+            document.getElementById('toggleScratchpadBtn').addEventListener('click', () => {
+                document.getElementById('scratchpadDrawer').classList.toggle('translate-x-[120%]');
+            });
+            document.getElementById('closeScratchpadBtn').addEventListener('click', () => {
+                document.getElementById('scratchpadDrawer').classList.add('translate-x-[120%]');
+            });
+
+            document.getElementById('addNoteBtn').addEventListener('click', () => {
+                const input = document.getElementById('newNoteInput');
+                addNote(input.value);
+                input.value = '';
+            });
+
+            document.getElementById('searchChatInput').addEventListener('input', renderChatHistory);
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function copyToClipboard(text) {
+            if (!text) return;
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            }
+            SpideySFX.play('thwip');
+        }
+
+        function escapeHtml(text) {
+            return (text || '').replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+    </script>
+</body>
+</html>
